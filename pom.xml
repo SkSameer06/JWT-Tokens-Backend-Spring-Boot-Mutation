@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.1-SNAPSHOT</version>
+		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mock</groupId>
@@ -15,8 +15,23 @@
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
+	<!-- <mvc:cors>
+
+    <mvc:mapping path="/**"
+        allowed-origins="http://localhost:3000"
+        allowed-methods="GET, PUT, OPTIONS, POST"
+        allowed-headers="*"
+        exposed-headers="*" 
+		allow-credentials="true"
+        max-age="3600" />
+
+    <mvc:mapping path="/resources/**"
+        allowed-origins="http://localhost:3000" />
+
+</mvc:cors> -->
 	<dependencies>
 		 <dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -41,11 +56,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -103,6 +118,12 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>

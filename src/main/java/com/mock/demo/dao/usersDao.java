@@ -42,5 +42,22 @@ public class usersDao {
         
 
     }
+
+            public users getUserDataById(int id) {
+       
+            try {
+                String sql = "select * from users where id = ?";
+        userRowMapper rm = new userRowMapper();
+        users user = jdbcTemplate.queryForObject(sql, rm, id);
+ 
+        return user;
+            } catch (Exception e) {
+                users user = new users();
+                System.out.println("User::::>"+user);
+               return user; 
+            }
+        
+
+    }
     
 }
