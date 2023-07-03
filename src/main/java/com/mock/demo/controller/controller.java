@@ -87,9 +87,10 @@ public class controller {
 			return result7;
 
 		} else {
+
 			users user = dao.loginCheck(user1.getEmail(), user1.getPassword());
-			System.out.println("USerssadfasdf::::::>" + user);
 			try {
+
 				if (user.getEmail() != null && user.getPassword() != null) {
 
 					ObjectMapper mapper = new ObjectMapper();
@@ -99,6 +100,10 @@ public class controller {
 					System.out.println("Access Token:::::::::>" + token);
 					String refreshToken = tok.generateRefreshToken(user.getId(), user.getName(), user.getEmail());
 					System.out.println("Refresh Token:::::::::>" + refreshToken);
+
+					result.put("AccessToken", token);
+					result.put("RefreshToken", refreshToken);
+
 					return result;
 
 				} else {
@@ -208,6 +213,71 @@ public class controller {
 
 			return "Refresh Token Invalid";
 
+		}
+
+	}
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(value = "/validateAccessToken", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String validateAccessToken(@RequestHeader("Authorization") String AccessToken,
+			@RequestHeader("refresh") String RefreshToken, HttpServletRequest req)
+			throws Exception {
+
+		System.out.println("Accesss:::::::::::::::::::>" + AccessToken);
+		System.out.println("Refresh:::::::::::::::::::>" + RefreshToken);
+
+		String token, token1;
+
+		if (AccessToken.contains("Bearer ")) {
+
+			token = AccessToken.substring(7);
+
+		} else {
+
+			token1 = "Bearer " + AccessToken;
+			token = token1.substring(7);
+
+		}
+
+		try {
+			jwt tok = new jwt();
+			Jws<Claims> decodedToken = tok.parseJwt(token);
+			System.out.println("Decode Token:::::::::>" + decodedToken);
+
+			ObjectMapper mapper = new ObjectMapper();
+			String sttr = mapper.writeValueAsString("Sameer");
+
+			return sttr;
+		} catch (Exception e) {
+			System.out.println("Exception::::::::::::::::::::::::::::::>");
+			// e.printStackTrace();
+			jwt tok = new jwt();
+
+			Jws<Claims> refreshTokenn = tok.validateRefreshToken(RefreshToken);
+
+			if (refreshTokenn != null) {
+
+				int id = (int) refreshTokenn.getBody().get("id");
+				String name = (String) refreshTokenn.getBody().get("name");
+				String email = (String) refreshTokenn.getBody().get("email");
+
+				System.out.println("Id:" + id);
+				System.out.println("Name:" + name);
+				System.out.println("Email:" + email);
+
+				String tokenn = tok.token(id, name, email);
+
+				ObjectMapper mapper = new ObjectMapper();
+				String jsonInString = mapper.writeValueAsString(tokenn);
+
+				return jsonInString;
+
+			} else {
+
+				return "Refresh Token Invalid";
+
+			}
 		}
 
 	}
