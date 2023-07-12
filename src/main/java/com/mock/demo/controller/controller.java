@@ -63,8 +63,11 @@ public class controller {
 
 			if (res == 0) {
 				return "Invalid Data";
+			} else {
+				ObjectMapper mapper = new ObjectMapper();
+				String jsonInString = mapper.writeValueAsString("Data Inserted");
+				return jsonInString;
 			}
-			return "Data Inserted";
 		} catch (Exception e) {
 			return "Invalid Data";
 		}
